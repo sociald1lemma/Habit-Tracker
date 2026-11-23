@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+model User {
+  id Int @id @default(autoincrement())
+  login String @unique
+  passwordHash String
+  name String
+  habits Habit[]
+  settings UserSettings?
+}
+model UserSettings {
+  userId Int @id
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal Int @default(3)
+  theme String @default("light")
+}
+model Habit {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title String
+  description String @default("")
+  category String
+  kind String
+  target Int
+  color String
+  icon String
+  start String
+  logs HabitLog[]
+}
+model HabitLog {
+  id Int @id @default(autoincrement())
+  habitId Int
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+  date String
+  @@unique([habitId, date])
+}
