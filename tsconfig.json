@@ -3,7 +3,8 @@
     "target": "ES2019",
     "lib": [
       "dom",
-      "esnext"
+      "esnext",
+      "dom.iterable"
     ],
     "strict": true,
     "skipLibCheck": true,
@@ -23,7 +24,9 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "allowJs": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
