@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { today,shift } from '@/lib/dates'
 import { db } from '@/lib/db'
 import { userId } from '@/lib/session'
@@ -9,6 +10,11 @@ function streak(dates:string[],now:string) {
   }
   return {best,current:previous>=shift(now,-1)?run:0}
 }
+export const metadata: Metadata = {
+  title: 'Статистика выполнения привычек',
+  description: 'Смотрите статистику за неделю и месяц, текущие и лучшие серии.',
+}
+
 export default async function Stats() {
   const now=today(),habits=await db.habit.findMany({where:{userId:await userId()},include:{logs:{orderBy:{date:'asc'}}}})
   function rate(n:number) {
